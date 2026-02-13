@@ -1,4 +1,4 @@
--- PolyDex v1.1 || 12/02/2026
+-- PolyDex v1.2 || 13/02/2026
 -- Written by lolxspy#0 || github.com/xspyy
 -- SCAMNAPSIA: discord.gg/wXQYe4RHuk
 
@@ -10,10 +10,13 @@ V1.0 || 07/02/2026
 - toggle for simplicity
 - scroll up/down buttons on both Explorer page and Properties page (they dont have scrolling frames)
 
-V1.1 || 12/02/2026
+v1.1 || 12/02/2026
 - dropdown menu
 - new layout (sort of)
 - search bar on explorer (beautiful, on v1.2 it would be on properties too)
+
+V1.2 || 13/02/2026
+- intro thing (just like dex on roblox!!)
 ]]
 
 local gui = nil
@@ -23,6 +26,205 @@ for i,v in pairs(game:GetChildren()) do
 		break
 	end
 end
+
+local function createintro()
+	local intro = Instance.new("UIView")
+	intro.PivotPoint = Vector2.New(0.5, 0.5)
+	intro.SizeOffset = Vector2.New(400, 250)
+	intro.PositionOffset = Vector2.New(0, 0)
+	intro.PositionRelative = Vector2.New(0.5, 0.5)
+	intro.Color = Color.New(0.15, 0.15, 0.15, 1)
+	intro.BorderColor = Color.New(0.3, 0.3, 0.3, 1)
+	intro.BorderWidth = 2
+	intro.Parent = gui
+	
+	local holder = Instance.new("UIView")
+	holder.PivotPoint = Vector2.New(0, 0)
+	holder.SizeOffset = Vector2.New(400, 250)
+	holder.PositionOffset = Vector2.New(0, 0)
+	holder.PositionRelative = Vector2.New(0, 0)
+	holder.Color = Color.New(0.15, 0.15, 0.15, 1)
+	holder.BorderWidth = 0
+	holder.ClipDescendants = true
+	holder.Parent = intro
+	
+	local title = Instance.new("UILabel")
+	title.PivotPoint = Vector2.New(0, 0)
+	title.SizeOffset = Vector2.New(200, 60)
+	title.PositionOffset = Vector2.New(-300, 20)
+	title.PositionRelative = Vector2.New(0, 0)
+	title.Color = Color.New(0.15, 0.15, 0.15, 1)
+	title.BorderWidth = 0
+	title.Text = "PolyDex"
+	title.TextColor = Color.New(1, 1, 1, 0)
+	title.FontSize = 30
+	title.Parent = holder
+	
+	local desc = Instance.new("UILabel")
+	desc.PivotPoint = Vector2.New(0, 0)
+	desc.SizeOffset = Vector2.New(300, 30)
+	desc.PositionOffset = Vector2.New(-400, 75)
+	desc.PositionRelative = Vector2.New(0, 0)
+	desc.Color = Color.New(0.15, 0.15, 0.15, 1)
+	desc.BorderWidth = 0
+	desc.Text = "Ultimate Debugging Suite"
+	desc.TextColor = Color.New(1, 1, 1, 0)
+	desc.FontSize = 14
+	desc.Parent = holder
+	
+	local status = Instance.new("UILabel")
+	status.PivotPoint = Vector2.New(0, 0)
+	status.SizeOffset = Vector2.New(250, 25)
+	status.PositionOffset = Vector2.New(30, 130)
+	status.PositionRelative = Vector2.New(0, 0)
+	status.Color = Color.New(0.15, 0.15, 0.15, 1)
+	status.BorderWidth = 0
+	status.Text = "Initializing..."
+	status.TextColor = Color.New(1, 1, 1, 0)
+	status.FontSize = 13
+	status.JustifyText = 0
+	status.Parent = holder
+	
+	local progressbar = Instance.new("UIView")
+	progressbar.PivotPoint = Vector2.New(0, 0)
+	progressbar.SizeOffset = Vector2.New(0, 5)
+	progressbar.PositionOffset = Vector2.New(80, 170)
+	progressbar.PositionRelative = Vector2.New(0, 0)
+	progressbar.Color = Color.New(0.2, 0.2, 0.2, 1)
+	progressbar.BorderWidth = 0
+	progressbar.Parent = holder
+	
+	local progressfill = Instance.new("UIView")
+	progressfill.PivotPoint = Vector2.New(0, 0)
+	progressfill.SizeOffset = Vector2.New(0, 5)
+	progressfill.PositionOffset = Vector2.New(0, 0)
+	progressfill.PositionRelative = Vector2.New(0, 0)
+	progressfill.Color = Color.New(0.3, 0.6, 0.9, 1)
+	progressfill.BorderWidth = 0
+	progressfill.Parent = progressbar
+	
+	local version = Instance.new("UILabel")
+	version.PivotPoint = Vector2.New(1, 1)
+	version.SizeOffset = Vector2.New(150, 20)
+	version.PositionOffset = Vector2.New(-10, -10)
+	version.PositionRelative = Vector2.New(1, 1)
+	version.Color = Color.New(0.15, 0.15, 0.15, 1)
+	version.BorderWidth = 0
+	version.Text = "v1.2"
+	version.TextColor = Color.New(1, 1, 1, 0)
+	version.FontSize = 12
+	version.JustifyText = 2
+	version.Parent = intro
+	
+	local creator = Instance.new("UILabel")
+	creator.PivotPoint = Vector2.New(1, 1)
+	creator.SizeOffset = Vector2.New(150, 20)
+	creator.PositionOffset = Vector2.New(-10, -30)
+	creator.PositionRelative = Vector2.New(1, 1)
+	creator.Color = Color.New(0.15, 0.15, 0.15, 1)
+	creator.BorderWidth = 0
+	creator.Text = "by lolxspy#0"
+	creator.TextColor = Color.New(1, 1, 1, 0)
+	creator.FontSize = 12
+	creator.JustifyText = 2
+	creator.Parent = intro
+	
+	Tween:TweenVector2(Vector2.New(-300, 20), Vector2.New(50, 20), 0.4, function(val)
+		title.PositionOffset = val
+	end, TweenType.easeOutQuad, nil)
+	
+	Tween:TweenColor(Color.New(1, 1, 1, 0), Color.New(1, 1, 1, 1), 0.4, function(val)
+		title.TextColor = val
+	end, TweenType.easeOutQuad, nil)
+	
+	Tween:TweenVector2(Vector2.New(-400, 75), Vector2.New(50, 75), 0.4, function(val)
+		desc.PositionOffset = val
+	end, TweenType.easeOutQuad, nil)
+	
+	Tween:TweenColor(Color.New(1, 1, 1, 0), Color.New(1, 1, 1, 1), 0.4, function(val)
+		desc.TextColor = val
+	end, TweenType.easeOutQuad, nil)
+	
+	wait(0.3)
+	Tween:TweenColor(Color.New(1, 1, 1, 0), Color.New(1, 1, 1, 1), 0.3, function(val)
+		version.TextColor = val
+		creator.TextColor = val
+	end, TweenType.easeOutQuad, nil)
+	
+	wait(0.2)
+	Tween:TweenColor(Color.New(1, 1, 1, 0), Color.New(1, 1, 1, 1), 0.25, function(val)
+		status.TextColor = val
+	end, TweenType.easeOutQuad, nil)
+	
+	Tween:TweenVector2(Vector2.New(0, 5), Vector2.New(200, 5), 0.25, function(val)
+		progressbar.SizeOffset = val
+	end, TweenType.easeOutQuad, nil)
+	
+	local function setprogress(text, progress)
+		status.Text = text
+		Tween:TweenVector2(progressfill.SizeOffset, Vector2.New(200 * progress, 5), 0.2, function(val)
+			progressfill.SizeOffset = val
+		end, TweenType.easeOutQuad, nil)
+	end
+	
+	local function closeintro()
+		Tween:TweenColor(title.TextColor, Color.New(1, 1, 1, 0), 0.3, function(val)
+			title.TextColor = val
+		end, TweenType.easeOutQuad, nil)
+		
+		Tween:TweenColor(desc.TextColor, Color.New(1, 1, 1, 0), 0.3, function(val)
+			desc.TextColor = val
+		end, TweenType.easeOutQuad, nil)
+		
+		Tween:TweenColor(status.TextColor, Color.New(1, 1, 1, 0), 0.3, function(val)
+			status.TextColor = val
+		end, TweenType.easeOutQuad, nil)
+		
+		Tween:TweenColor(version.TextColor, Color.New(1, 1, 1, 0), 0.3, function(val)
+			version.TextColor = val
+		end, TweenType.easeOutQuad, nil)
+		
+		Tween:TweenColor(creator.TextColor, Color.New(1, 1, 1, 0), 0.3, function(val)
+			creator.TextColor = val
+		end, TweenType.easeOutQuad, nil)
+		
+		Tween:TweenColor(progressbar.Color, Color.New(0.2, 0.2, 0.2, 0), 0.3, function(val)
+			progressbar.Color = val
+		end, TweenType.easeOutQuad, nil)
+		
+		Tween:TweenColor(progressfill.Color, Color.New(0.3, 0.6, 0.9, 0), 0.3, function(val)
+			progressfill.Color = val
+		end, TweenType.easeOutQuad, nil)
+		
+		wait(0.4)
+		
+		Tween:TweenColor(intro.Color, Color.New(0.15, 0.15, 0.15, 0), 0.4, function(val)
+			intro.Color = val
+		end, TweenType.easeOutQuad, function()
+			intro:Destroy()
+		end)
+		
+		Tween:TweenColor(intro.BorderColor, Color.New(0.3, 0.3, 0.3, 0), 0.4, function(val)
+			intro.BorderColor = val
+		end, TweenType.easeOutQuad, nil)
+	end
+	
+	return {
+		setprogress = setprogress,
+		close = closeintro
+	}
+end
+
+local intro = createintro()
+wait(0.5)
+intro.setprogress("Loading Explorer...", 0.3)
+wait(0.3)
+intro.setprogress("Loading Properties...", 0.6)
+wait(0.3)
+intro.setprogress("Complete!", 1.0)
+wait(0.5)
+intro.close()
+wait(0.5)
 
 local expinst = {}
 local selectedinst = nil
@@ -37,7 +239,7 @@ toggleb.PositionRelative = Vector2.New(0.5, 1)
 toggleb.PositionOffset = Vector2.New(0, -10)
 toggleb.SizeOffset = Vector2.New(80, 30)
 toggleb.Color = Color.New(0.2, 0.2, 0.2, 1)
-toggleb.Text = "PDex v1.1"
+toggleb.Text = "PDex v1.2"
 toggleb.TextColor = Color.New(1, 1, 1, 1)
 toggleb.FontSize = 12
 toggleb.Parent = gui
