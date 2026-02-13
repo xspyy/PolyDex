@@ -377,16 +377,16 @@ function refreshprops()
 	end
 	
 	if not selectedinst then
-		local noSelection = Instance.new("UILabel")
-		noSelection.PivotPoint = Vector2.New(0, 0)
-		noSelection.SizeOffset = Vector2.New(300 - 4, 30)
-		noSelection.PositionOffset = Vector2.New(0, 10 - pscrolloffset)
-		noSelection.PositionRelative = Vector2.New(0, 0)
-		noSelection.Color = Color.New(0.1, 0.1, 0.1, 0)
-		noSelection.Text = "no instance selected"
-		noSelection.TextColor = Color.New(0.6, 0.6, 0.6, 1)
-		noSelection.FontSize = 11
-		noSelection.Parent = pcontent
+		local noselection = Instance.new("UILabel")
+		noselection.PivotPoint = Vector2.New(0, 0)
+		noselection.SizeOffset = Vector2.New(300 - 4, 30)
+		noselection.PositionOffset = Vector2.New(0, 10 - pscrolloffset)
+		noselection.PositionRelative = Vector2.New(0, 0)
+		noselection.Color = Color.New(0.1, 0.1, 0.1, 0)
+		noselection.Text = "no instance selected"
+		noselection.TextColor = Color.New(0.6, 0.6, 0.6, 1)
+		noselection.FontSize = 11
+		noselection.Parent = pcontent
 		return
 	end
 	
@@ -428,9 +428,9 @@ function refreshprops()
 	ypos = ypos + 10
 	
 	local classssnameeee = selectedinst.ClassName or "Instance"
-	local propsToShow = apidump[classssnameeee] or apidump["Instance"] or apidump["Default"]
+	local propstoshow = apidump[classssnameeee] or apidump["Instance"] or apidump["Default"]
 	
-	for _, propertyn in pairs(propsToShow) do
+	for _, propertyn in pairs(propstoshow) do
 		local success, value = pcall(function()
 			return selectedinst[propertyn]
 		end)
