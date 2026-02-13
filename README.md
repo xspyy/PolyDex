@@ -1,4 +1,4 @@
-# PolyDex v1.1
+# PolyDex v1.2
 Polytoria's first ever Dex Explorer, written by me :)
 
 ## Features
@@ -12,6 +12,9 @@ Polytoria's first ever Dex Explorer, written by me :)
 - dropdown menu
 - new layout (sort of)
 - search bar on explorer (beautiful, on v1.2 it would be on properties too)
+
+(v1.2 - 13/02/2026)
+- intro thing (just like dex on roblox!!)
 
 ## Suggestions?
 COME DROP SUGGESTIONS IN [SCAMNAPSIA, our discord server!](https://discord.gg/wXQYe4RHuk)
