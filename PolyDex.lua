@@ -1,13 +1,19 @@
--- PolyDex v1.0
+-- PolyDex v1.1 || 12/02/2026
 -- Written by lolxspy#0 || github.com/xspyy
 -- SCAMNAPSIA: discord.gg/wXQYe4RHuk
 
 --[[
 CURRENT FEATURES;
+V1.0 || 07/02/2026
 - browse through the game's instances i guess (we support practically everything)
 - properties list (modifiable!!)
 - toggle for simplicity
 - scroll up/down buttons on both Explorer page and Properties page (they dont have scrolling frames)
+
+V1.1 || 12/02/2026
+- dropdown menu
+- new layout (sort of)
+- search bar on explorer (beautiful, on v1.2 it would be on properties too)
 ]]
 
 local gui = nil
@@ -23,23 +29,80 @@ local selectedinst = nil
 local isvisible = true
 local escrolloffset = 0
 local pscrolloffset = 0
+local query = "" 
 
 local toggleb = Instance.new("UIButton")
-toggleb.PivotPoint = Vector2.New(0, 0)
-toggleb.SizeOffset = Vector2.New(30, 30)
-toggleb.PositionOffset = Vector2.New(10, 10)
-toggleb.PositionRelative = Vector2.New(0, 0)
+toggleb.PivotPoint = Vector2.New(0.5, 1)
+toggleb.PositionRelative = Vector2.New(0.5, 1)
+toggleb.PositionOffset = Vector2.New(0, -10)
+toggleb.SizeOffset = Vector2.New(80, 30)
 toggleb.Color = Color.New(0.2, 0.2, 0.2, 1)
-toggleb.Text = "PDex"
+toggleb.Text = "PDex v1.1"
 toggleb.TextColor = Color.New(1, 1, 1, 1)
-toggleb.FontSize = 9
+toggleb.FontSize = 12
 toggleb.Parent = gui
 
+
+local dropdownmenu = Instance.new("UIView")
+dropdownmenu.PivotPoint = Vector2.New(0.5, 1)
+dropdownmenu.PositionRelative = Vector2.New(0.5, 1)
+dropdownmenu.PositionOffset = Vector2.New(0, -50)
+dropdownmenu.SizeOffset = Vector2.New(120, 130)
+dropdownmenu.Color = Color.New(0.15, 0.15, 0.15, 1)
+dropdownmenu.BorderColor = Color.New(0.3, 0.3, 0.3, 1)
+dropdownmenu.BorderWidth = 2
+dropdownmenu.Visible = false
+dropdownmenu.Parent = gui
+
+local toplabel = Instance.new("UILabel")
+toplabel.PivotPoint = Vector2.New(0, 0)
+toplabel.SizeOffset = Vector2.New(116, 25)
+toplabel.PositionOffset = Vector2.New(2, 2)
+toplabel.PositionRelative = Vector2.New(0, 0)
+toplabel.Color = Color.New(0.2, 0.2, 0.2, 1)
+toplabel.Text = "lolxspy#0"
+toplabel.TextColor = Color.New(1, 1, 1, 1)
+toplabel.FontSize = 11
+toplabel.Parent = dropdownmenu
+
+local explorerbutton = Instance.new("UIButton")
+explorerbutton.PivotPoint = Vector2.New(0, 0)
+explorerbutton.SizeOffset = Vector2.New(116, 28)
+explorerbutton.PositionOffset = Vector2.New(2, 30)
+explorerbutton.PositionRelative = Vector2.New(0, 0)
+explorerbutton.Color = Color.New(0.22, 0.22, 0.22, 1)
+explorerbutton.Text = "Explorer"
+explorerbutton.TextColor = Color.New(1, 1, 1, 1)
+explorerbutton.FontSize = 11
+explorerbutton.Parent = dropdownmenu
+
+local propertiesbutton = Instance.new("UIButton")
+propertiesbutton.PivotPoint = Vector2.New(0, 0)
+propertiesbutton.SizeOffset = Vector2.New(116, 28)
+propertiesbutton.PositionOffset = Vector2.New(2, 60)
+propertiesbutton.PositionRelative = Vector2.New(0, 0)
+propertiesbutton.Color = Color.New(0.22, 0.22, 0.22, 1)
+propertiesbutton.Text = "Properties"
+propertiesbutton.TextColor = Color.New(1, 1, 1, 1)
+propertiesbutton.FontSize = 11
+propertiesbutton.Parent = dropdownmenu
+
+local closebutton = Instance.new("UIButton")
+closebutton.PivotPoint = Vector2.New(0, 0)
+closebutton.SizeOffset = Vector2.New(116, 28)
+closebutton.PositionOffset = Vector2.New(2, 90)
+closebutton.PositionRelative = Vector2.New(0, 0)
+closebutton.Color = Color.New(0.6, 0.22, 0.22, 1)
+closebutton.Text = "Close"
+closebutton.TextColor = Color.New(1, 1, 1, 1)
+closebutton.FontSize = 11
+closebutton.Parent = dropdownmenu
+
 local explorerw = Instance.new("UIView")
-explorerw.PivotPoint = Vector2.New(0, 0)
-explorerw.SizeOffset = Vector2.New(250, 400)
-explorerw.PositionOffset = Vector2.New(50, 10)
-explorerw.PositionRelative = Vector2.New(0, 0)
+explorerw.PivotPoint = Vector2.New(1, 0)
+explorerw.SizeOffset = Vector2.New(300, 350)
+explorerw.PositionOffset = Vector2.New(-10, 410)
+explorerw.PositionRelative = Vector2.New(1, 0)
 explorerw.Color = Color.New(0.15, 0.15, 0.15, 1)
 explorerw.BorderColor = Color.New(0.3, 0.3, 0.3, 1)
 explorerw.BorderWidth = 2
@@ -47,29 +110,49 @@ explorerw.Parent = gui
 
 local explorertitle = Instance.new("UILabel")
 explorertitle.PivotPoint = Vector2.New(0, 0)
-explorertitle.SizeOffset = Vector2.New(250, 25)
+explorertitle.SizeOffset = Vector2.New(300, 25)
 explorertitle.PositionOffset = Vector2.New(0, 0)
 explorertitle.PositionRelative = Vector2.New(0, 0)
 explorertitle.Color = Color.New(0.2, 0.2, 0.2, 1)
-explorertitle.Text = "PolyDex - lolxspy#0"
+explorertitle.Text = "Explorer"
 explorertitle.TextColor = Color.New(1, 1, 1, 1)
 explorertitle.FontSize = 14
 explorertitle.Parent = explorerw
 
+local searchbar = Instance.new("UITextInput")
+searchbar.PivotPoint = Vector2.New(0, 0)
+searchbar.SizeOffset = Vector2.New(300 - 4, 25)
+searchbar.PositionOffset = Vector2.New(2, 27)
+searchbar.PositionRelative = Vector2.New(0, 0)
+searchbar.Color = Color.New(0.12, 0.12, 0.12, 1)
+searchbar.BorderColor = Color.New(0.4, 0.4, 0.4, 1)
+searchbar.BorderWidth = 1
+searchbar.Text = ""
+searchbar.TextColor = Color.New(1, 1, 1, 1)
+searchbar.FontSize = 10
+searchbar.Placeholder = "Search..."
+searchbar.PlaceholderColor = Color.New(0.5, 0.5, 0.5, 1)
+searchbar.Parent = explorerw
+
+searchbar.Changed:Connect(function()
+	query = searchbar.Text:lower()
+	refreshpage()
+end)
+
 local econtent = Instance.new("UIView")
 econtent.PivotPoint = Vector2.New(0, 0)
-econtent.SizeOffset = Vector2.New(250 - 4, 400 - 29)
-econtent.PositionOffset = Vector2.New(2, 27)
+econtent.SizeOffset = Vector2.New(300 - 4, 350 - 56)
+econtent.PositionOffset = Vector2.New(2, 54)
 econtent.PositionRelative = Vector2.New(0, 0)
 econtent.Color = Color.New(0.1, 0.1, 0.1, 1)
 econtent.ClipDescendants = true
 econtent.Parent = explorerw
 
 local propertiesw = Instance.new("UIView")
-propertiesw.PivotPoint = Vector2.New(0, 0)
-propertiesw.SizeOffset = Vector2.New(250, 400)
-propertiesw.PositionOffset = Vector2.New(50 + 250 + 10, 10)
-propertiesw.PositionRelative = Vector2.New(0, 0)
+propertiesw.PivotPoint = Vector2.New(1, 0)
+propertiesw.SizeOffset = Vector2.New(300, 350)
+propertiesw.PositionOffset = Vector2.New(-10, 50)
+propertiesw.PositionRelative = Vector2.New(1, 0)
 propertiesw.Color = Color.New(0.15, 0.15, 0.15, 1)
 propertiesw.BorderColor = Color.New(0.3, 0.3, 0.3, 1)
 propertiesw.BorderWidth = 2
@@ -77,7 +160,7 @@ propertiesw.Parent = gui
 
 local propertiestitle = Instance.new("UILabel")
 propertiestitle.PivotPoint = Vector2.New(0, 0)
-propertiestitle.SizeOffset = Vector2.New(250, 25)
+propertiestitle.SizeOffset = Vector2.New(300, 25)
 propertiestitle.PositionOffset = Vector2.New(0, 0)
 propertiestitle.PositionRelative = Vector2.New(0, 0)
 propertiestitle.Color = Color.New(0.2, 0.2, 0.2, 1)
@@ -88,7 +171,7 @@ propertiestitle.Parent = propertiesw
 
 local pcontent = Instance.new("UIView")
 pcontent.PivotPoint = Vector2.New(0, 0)
-pcontent.SizeOffset = Vector2.New(250 - 4, 400 - 29)
+pcontent.SizeOffset = Vector2.New(300 - 4, 300 - 29)
 pcontent.PositionOffset = Vector2.New(2, 27)
 pcontent.PositionRelative = Vector2.New(0, 0)
 pcontent.Color = Color.New(0.1, 0.1, 0.1, 1)
@@ -110,43 +193,51 @@ function createpageitems(inst, depth)
 		isparent = howmanychildrendoesbrotatohave > 0
 	end
 	
-	local button = Instance.new("UIButton")
-	button.PivotPoint = Vector2.New(0, 0)
-	button.SizeOffset = Vector2.New(250 - 4 - (depth * 15), 20)
-	button.PositionOffset = Vector2.New(depth * 15, currenty + escrolloffset)
-	button.PositionRelative = Vector2.New(0, 0)
-	
-	if selectedinst == inst then
-		button.Color = Color.New(0.3, 0.4, 0.6, 1)
-	else
-		button.Color = Color.New(0.12, 0.12, 0.12, 1)
-	end
-	
-	button.TextColor = Color.New(1, 1, 1, 1)
-	button.FontSize = 11
-	button.JustifyText = 0
-	
-	local arrow = ""
-	if isparent then
-		arrow = expinst[inst] and "v " or "> "
-	else
-		arrow = "  "
-	end
-	
 	local displayname = inst.Name or tostring(inst)
-	button.Text = arrow .. displayname
+	local shouldshow = true
 	
-	button.Parent = econtent
-	currenty = currenty + 20
+	if query ~= "" then
+		shouldshow = displayname:lower():find(query) ~= nil
+	end
 	
-	button.Clicked:Connect(function()
-		selectedinst = inst
-		if isparent then
-			expinst[inst] = not expinst[inst]
+	if shouldshow then
+		local button = Instance.new("UIButton")
+		button.PivotPoint = Vector2.New(0, 1)
+		button.SizeOffset = Vector2.New(300 - 4 - (depth * 15), 20)
+		button.PositionOffset = Vector2.New(depth * 15, -currenty + escrolloffset)
+		button.PositionRelative = Vector2.New(0, 1)
+		
+		if selectedinst == inst then
+			button.Color = Color.New(0.3, 0.4, 0.6, 1)
+		else
+			button.Color = Color.New(0.12, 0.12, 0.12, 1)
 		end
-		refreshpage()
-		refreshprops()
-	end)
+		
+		button.TextColor = Color.New(1, 1, 1, 1)
+		button.FontSize = 11
+		button.JustifyText = 0
+		
+		local arrow = ""
+		if isparent then
+			arrow = expinst[inst] and "v " or "> "
+		else
+			arrow = "  "
+		end
+		
+		button.Text = arrow .. displayname
+		
+		button.Parent = econtent
+		currenty = currenty + 20
+		
+		button.Clicked:Connect(function()
+			selectedinst = inst
+			if isparent then
+				expinst[inst] = not expinst[inst]
+			end
+			refreshpage()
+			refreshprops()
+		end)
+	end
 	
 	if expinst[inst] and isparent then
 		for i, child in pairs(children) do
@@ -223,8 +314,8 @@ local apidump = {
 function createpropertyeditor(propertyn, currentval, ypos)
 	local namelabel = Instance.new("UILabel")
 	namelabel.PivotPoint = Vector2.New(0, 0)
-	namelabel.SizeOffset = Vector2.New(80, 25)
-	namelabel.PositionOffset = Vector2.New(5, ypos + pscrolloffset)
+	namelabel.SizeOffset = Vector2.New(100, 25)
+	namelabel.PositionOffset = Vector2.New(5, ypos - pscrolloffset)
 	namelabel.PositionRelative = Vector2.New(0, 0)
 	namelabel.Color = Color.New(0.1, 0.1, 0.1, 0)
 	namelabel.Text = propertyn
@@ -235,8 +326,8 @@ function createpropertyeditor(propertyn, currentval, ypos)
 	
 	local input = Instance.new("UITextInput")
 	input.PivotPoint = Vector2.New(0, 0)
-	input.SizeOffset = Vector2.New(250 - 95, 25)
-	input.PositionOffset = Vector2.New(90, ypos + pscrolloffset)
+	input.SizeOffset = Vector2.New(300 - 115, 25)
+	input.PositionOffset = Vector2.New(110, ypos - pscrolloffset)
 	input.PositionRelative = Vector2.New(0, 0)
 	input.Color = Color.New(0.2, 0.2, 0.2, 1)
 	input.BorderColor = Color.New(0.4, 0.4, 0.4, 1)
@@ -288,8 +379,8 @@ function refreshprops()
 	if not selectedinst then
 		local noSelection = Instance.new("UILabel")
 		noSelection.PivotPoint = Vector2.New(0, 0)
-		noSelection.SizeOffset = Vector2.New(250 - 4, 30)
-		noSelection.PositionOffset = Vector2.New(0, 10 + pscrolloffset)
+		noSelection.SizeOffset = Vector2.New(300 - 4, 30)
+		noSelection.PositionOffset = Vector2.New(0, 10 - pscrolloffset)
 		noSelection.PositionRelative = Vector2.New(0, 0)
 		noSelection.Color = Color.New(0.1, 0.1, 0.1, 0)
 		noSelection.Text = "no instance selected"
@@ -303,8 +394,8 @@ function refreshprops()
 	
 	local namelabel = Instance.new("UILabel")
 	namelabel.PivotPoint = Vector2.New(0, 0)
-	namelabel.SizeOffset = Vector2.New(250 - 4, 20)
-	namelabel.PositionOffset = Vector2.New(0, ypos + pscrolloffset)
+	namelabel.SizeOffset = Vector2.New(300 - 4, 20)
+	namelabel.PositionOffset = Vector2.New(0, ypos - pscrolloffset)
 	namelabel.PositionRelative = Vector2.New(0, 0)
 	namelabel.Color = Color.New(0.1, 0.1, 0.1, 0)
 	namelabel.Text = "Name: " .. (selectedinst.Name or "N/A")
@@ -316,8 +407,8 @@ function refreshprops()
 	
 	local classlabel = Instance.new("UILabel")
 	classlabel.PivotPoint = Vector2.New(0, 0)
-	classlabel.SizeOffset = Vector2.New(250 - 4, 20)
-	classlabel.PositionOffset = Vector2.New(0, ypos + pscrolloffset)
+	classlabel.SizeOffset = Vector2.New(300 - 4, 20)
+	classlabel.PositionOffset = Vector2.New(0, ypos - pscrolloffset)
 	classlabel.PositionRelative = Vector2.New(0, 0)
 	classlabel.Color = Color.New(0.1, 0.1, 0.1, 0)
 	classlabel.Text = "Class: " .. (selectedinst.ClassName or "N/A")
@@ -329,8 +420,8 @@ function refreshprops()
 	
 	local divider = Instance.new("UIView")
 	divider.PivotPoint = Vector2.New(0, 0)
-	divider.SizeOffset = Vector2.New(250 - 10, 1)
-	divider.PositionOffset = Vector2.New(5, ypos + pscrolloffset)
+	divider.SizeOffset = Vector2.New(300 - 10, 1)
+	divider.PositionOffset = Vector2.New(5, ypos - pscrolloffset)
 	divider.PositionRelative = Vector2.New(0, 0)
 	divider.Color = Color.New(0.3, 0.3, 0.3, 1)
 	divider.Parent = pcontent
@@ -351,14 +442,25 @@ function refreshprops()
 	end
 end
 
-function visiblitiytoggle() -- i am very shakespearean as you can see
-	isvisible = not isvisible
-	explorerw.Visible = isvisible
-	propertiesw.Visible = isvisible
-end
-
 toggleb.Clicked:Connect(function()
-	visiblitiytoggle()
+	dropdownmenu.Visible = not dropdownmenu.Visible
+end)
+
+explorerbutton.Clicked:Connect(function()
+	explorerw.Visible = not explorerw.Visible
+	dropdownmenu.Visible = false
+end)
+
+propertiesbutton.Clicked:Connect(function()
+	propertiesw.Visible = not propertiesw.Visible
+	dropdownmenu.Visible = false
+end)
+
+closebutton.Clicked:Connect(function()
+	toggleb:Destroy()
+	dropdownmenu:Destroy()
+	explorerw:Destroy()
+	propertiesw:Destroy()
 end)
 
 refreshpage()
@@ -367,27 +469,10 @@ refreshprops()
 econtent.MouseDown:Connect(function() end)
 pcontent.MouseDown:Connect(function() end)
 
-local explorerscrollup = Instance.new("UIButton")
-explorerscrollup.PivotPoint = Vector2.New(0, 0)
-explorerscrollup.SizeOffset = Vector2.New(20, 20)
-explorerscrollup.PositionOffset = Vector2.New(250 - 22, 27)
-explorerscrollup.PositionRelative = Vector2.New(0, 0)
-explorerscrollup.Color = Color.New(0.25, 0.25, 0.25, 1)
-explorerscrollup.Text = "^"
-explorerscrollup.TextColor = Color.New(1, 1, 1, 1)
-explorerscrollup.FontSize = 12
-explorerscrollup.Parent = explorerw
-
-explorerscrollup.Clicked:Connect(function()
-	escrolloffset = escrolloffset + 20
-	if escrolloffset > 0 then escrolloffset = 0 end
-	refreshpage()
-end)
-
 local explorerscrolldown = Instance.new("UIButton")
 explorerscrolldown.PivotPoint = Vector2.New(0, 0)
 explorerscrolldown.SizeOffset = Vector2.New(20, 20)
-explorerscrolldown.PositionOffset = Vector2.New(250 - 22, 400 - 22)
+explorerscrolldown.PositionOffset = Vector2.New(300 - 22, 27)
 explorerscrolldown.PositionRelative = Vector2.New(0, 0)
 explorerscrolldown.Color = Color.New(0.25, 0.25, 0.25, 1)
 explorerscrolldown.Text = "v"
@@ -396,31 +481,31 @@ explorerscrolldown.FontSize = 12
 explorerscrolldown.Parent = explorerw
 
 explorerscrolldown.Clicked:Connect(function()
-	escrolloffset = escrolloffset - 20
+	escrolloffset = escrolloffset + 20
+	if escrolloffset < 0 then escrolloffset = 0 end
 	refreshpage()
 end)
 
-local propertiesscrollup = Instance.new("UIButton")
-propertiesscrollup.PivotPoint = Vector2.New(0, 0)
-propertiesscrollup.SizeOffset = Vector2.New(20, 20)
-propertiesscrollup.PositionOffset = Vector2.New(250 - 22, 27)
-propertiesscrollup.PositionRelative = Vector2.New(0, 0)
-propertiesscrollup.Color = Color.New(0.25, 0.25, 0.25, 1)
-propertiesscrollup.Text = "^"
-propertiesscrollup.TextColor = Color.New(1, 1, 1, 1)
-propertiesscrollup.FontSize = 12
-propertiesscrollup.Parent = propertiesw
+local explorerscrollup = Instance.new("UIButton")
+explorerscrollup.PivotPoint = Vector2.New(0, 0)
+explorerscrollup.SizeOffset = Vector2.New(20, 20)
+explorerscrollup.PositionOffset = Vector2.New(300 - 22, 350 - 22)
+explorerscrollup.PositionRelative = Vector2.New(0, 0)
+explorerscrollup.Color = Color.New(0.25, 0.25, 0.25, 1)
+explorerscrollup.Text = "^"
+explorerscrollup.TextColor = Color.New(1, 1, 1, 1)
+explorerscrollup.FontSize = 12
+explorerscrollup.Parent = explorerw
 
-propertiesscrollup.Clicked:Connect(function()
-	pscrolloffset = pscrolloffset + 20
-	if pscrolloffset > 0 then pscrolloffset = 0 end
-	refreshprops()
+explorerscrollup.Clicked:Connect(function()
+	escrolloffset = escrolloffset - 20
+	refreshpage()
 end)
 
 local propertiesscrolldown = Instance.new("UIButton")
 propertiesscrolldown.PivotPoint = Vector2.New(0, 0)
 propertiesscrolldown.SizeOffset = Vector2.New(20, 20)
-propertiesscrolldown.PositionOffset = Vector2.New(250 - 22, 400 - 22)
+propertiesscrolldown.PositionOffset = Vector2.New(300 - 22, 27)
 propertiesscrolldown.PositionRelative = Vector2.New(0, 0)
 propertiesscrolldown.Color = Color.New(0.25, 0.25, 0.25, 1)
 propertiesscrolldown.Text = "v"
@@ -430,5 +515,22 @@ propertiesscrolldown.Parent = propertiesw
 
 propertiesscrolldown.Clicked:Connect(function()
 	pscrolloffset = pscrolloffset - 20
+	if pscrolloffset < 0 then pscrolloffset = 0 end
+	refreshprops()
+end)
+
+local propertiesscrollup = Instance.new("UIButton")
+propertiesscrollup.PivotPoint = Vector2.New(0, 0)
+propertiesscrollup.SizeOffset = Vector2.New(20, 20)
+propertiesscrollup.PositionOffset = Vector2.New(300 - 22, 300 - 22)
+propertiesscrollup.PositionRelative = Vector2.New(0, 0)
+propertiesscrollup.Color = Color.New(0.25, 0.25, 0.25, 1)
+propertiesscrollup.Text = "^"
+propertiesscrollup.TextColor = Color.New(1, 1, 1, 1)
+propertiesscrollup.FontSize = 12
+propertiesscrollup.Parent = propertiesw
+
+propertiesscrollup.Clicked:Connect(function()
+	pscrolloffset = pscrolloffset + 20
 	refreshprops()
 end)
