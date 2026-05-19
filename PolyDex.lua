@@ -1,5 +1,5 @@
 -- PolyDex v1.2 || 13/02/2026
--- Written by lolxspy#0 || github.com/xspyy
+-- Written by xapylol#0 || github.com/xspyy
 -- SCAMNAPSIA: discord.gg/wXQYe4RHuk
 
 --[[
@@ -123,7 +123,7 @@ local function createintro()
 	creator.PositionRelative = Vector2.New(1, 1)
 	creator.Color = Color.New(0.15, 0.15, 0.15, 1)
 	creator.BorderWidth = 0
-	creator.Text = "by lolxspy#0"
+	creator.Text = "by xspylol#0"
 	creator.TextColor = Color.New(1, 1, 1, 0)
 	creator.FontSize = 12
 	creator.JustifyText = 2
@@ -262,7 +262,7 @@ toplabel.SizeOffset = Vector2.New(116, 25)
 toplabel.PositionOffset = Vector2.New(2, 2)
 toplabel.PositionRelative = Vector2.New(0, 0)
 toplabel.Color = Color.New(0.2, 0.2, 0.2, 1)
-toplabel.Text = "lolxspy#0"
+toplabel.Text = "xspylol#0"
 toplabel.TextColor = Color.New(1, 1, 1, 1)
 toplabel.FontSize = 11
 toplabel.Parent = dropdownmenu
