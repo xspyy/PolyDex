@@ -1,5 +1,5 @@
 -- PolyDex v1.2 || 13/02/2026
--- Written by xapylol#0 || github.com/xspyy
+-- Written by xspylol#0 || github.com/xspyy
 -- SCAMNAPSIA: discord.gg/wXQYe4RHuk
 
 --[[
