@@ -17,4 +17,4 @@ Polytoria's first ever Dex Explorer, written by me :)
 - intro thing (just like dex on roblox!!)
 
 ## Suggestions?
-COME DROP SUGGESTIONS IN [SCAMNAPSIA, our discord server!](https://discord.gg/wXQYe4RHuk)
+Please create an Issue for suggestions! :)
